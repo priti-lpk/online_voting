@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style type="text/css">
+	body{
+		background-color: #bdbdbd;
+		color: #757575;
+	}
+	.container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 7%;
+    }
+
+	@media (min-width: 1200px){
+     .container {
+        max-width: 1140px;
+     }
+    }
+
+    @media (min-width: 992px){
+     .container {
+       max-width: 960px;
+     }
+    }
+
+    @media (min-width: 768px){
+      .container {
+        max-width: 720px;
+      }
+    }
+
+    @media (min-width: 576px){
+      .container {
+        max-width: 540px;
+       }
+    }
+
+	.row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    h1{
+    	text-align: center;
+    	color: #4a4a4a;
+    	margin-bottom: 40px;
+    }
+
+    h3{
+        color: #4a4a4a;
+    } 
+
+
+ form{
+ 	width: 100% !important;
+ }
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 85%;
+  background: #f1f1f1;
+  height: 20px;
+}
+
+form.example select{
+
+float: left;
+  width: 80%;
+  color: #757575;
+  
+}
+
+form.example button {
+  float: left;
+  width: 10%;
+  height: 42px;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid #2196F3;
+  border-left: none;
+  cursor: pointer;
+}
+
+
+
+form.example button:hover {
+  background: #000;
+}
+
+.filterElements{
+  width: 80%;
+  height: 42px;
+}
+
+.filterElements option{
+  height: 20px !important;
+}
+
+table, th, td {
+  border: 1px solid grey;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid grey;
+  text-align: center;
+}
+
+th, td {
+  padding: 8px;
+}
+
+.radioBtn {
+  display: block;
+  position: relative;
+  /*padding-left: 35px;*/
+ /* margin-bottom: 12px;*/
+  cursor: pointer;
+  font-size: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top: -10px !important;
+}
+
+/* Hide the browser's default radio button */
+.radioBtn input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radioBtn:hover input ~ .checkmark {
+  background-color: #aaa;
+}
+
+/* When the radio button is checked, add a blue background */
+.radioBtn input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radioBtn input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radioBtn .checkmark:after {
+  top: 7px;
+  left: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+select {
+    font-size: .9rem;
+    padding: 2px 5px;
+    height:42px;
+}
+
+
+</style>
+</head>
+<body>
+	<div class="container">
+	  <h1>Voting System</h1>
+
+	      <form class="example" action="">
+          <input placeholder="Select Position">
+           <select name="pets" id="pet-select">
+              <option value="">Select Position</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="hamster">Hamster</option>
+              <option value="parrot">Parrot</option>
+           </select>
+             
+             
+             <button type="submit"><i class="material-icons"><img src="search.png"/></i></button>
+          </form>
+
+    </div>
+
+    <div style="overflow-x:auto;" class="container">
+  <table>
+    <tr>
+      <th>No.</th>
+      <th></th>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Symbol</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>
+      	<label class="radioBtn">
+          <input type="radio" checked="checked" name="radio">
+          <span class="checkmark"></span>
+        </label>
+      </td>
+      <td><img src="https://www.lpktechnosoft.com/images/logo.png" height="20px" width="20px;" /></td>
+      <td>Jill</td>
+      <td><img src="https://www.lpktechnosoft.com/images/logo.png" height="20px" width="20px;" /></td>
+    </tr>
+
+    <tr>
+      <td>1</td>
+      <td>
+      	<label class="radioBtn">
+          <input type="radio" name="radio">
+          <span class="checkmark"></span>
+        </label>
+      </td>
+      <td><img src="https://www.lpktechnosoft.com/images/logo.png" height="20px" width="20px;" /></td>
+      <td>Mill</td>
+      <td><img src="https://www.lpktechnosoft.com/images/logo.png" height="20px" width="20px;" /></td>
+    </tr>
+
+  </table>
+</div>
+
+</body>
+</html>
