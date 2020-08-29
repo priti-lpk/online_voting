@@ -268,8 +268,11 @@
 
 // Get Physical Address
                     $mac = substr($mycom, ($pmac + 36), 17);
+
 //Display Mac Address
-                    echo $mac;
+//                    echo $mac;
+                   echo $clientIP = $_SERVER['SERVER_ADDR'];
+
 
                     if (isset($pos_id)) {
                         ?>
