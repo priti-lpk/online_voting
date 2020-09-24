@@ -28,7 +28,7 @@ class MainController extends Controller {
         $user_id = $request->input('user_id');
         $mac_address = $request->input('mac_address');
 
-        $data = array('position_id' => $position_id, "candidates_id" => $candidates_id, "user_id" => $user_id, "mac_address" => $mac_address);
+        $data = array('position_id' => $position_id, "candidates_id" => $candidates_id, "user_id" => $user_id);
         DB::table('voting_table')->insert($data);
         $q = DB::table('voting_table')->toSql();
         return back()->withInput();

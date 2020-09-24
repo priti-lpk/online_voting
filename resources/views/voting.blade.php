@@ -105,7 +105,6 @@ $mac = substr($mycom, ($pmac + 36), 17);
                                         if (isset($pos_id)) {
                                             ?>
                                         <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
-                                        <input type="hidden" name="mac_address" value="<?php echo $mac ?>">
                                         <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
                                         <?php
                                         $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
@@ -133,7 +132,7 @@ $mac = substr($mycom, ($pmac + 36), 17);
                                         <?php
                                         $data = '';
                                         if (isset($pos_id)) {
-                                            $address = DB::select('select mac_address from voting_table where position_id=' . $pos_id . ' and user_id=' . session()->get('userid') . ' and mac_address="' . $mac . '"');
+                                            $address = DB::select('select user_id from voting_table where position_id=' . $pos_id . ' and user_id=' . session()->get('userid') . '');
                                             if ($address == Array()) {
                                                 ?>
                                                 <button  type="submit" id='submit-button' class="btn btn-primary btn-block w-md waves-effect waves-light">Submit</button>
