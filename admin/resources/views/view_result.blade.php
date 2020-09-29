@@ -86,11 +86,17 @@
                                     Result of Voting
                                 </div>
                                 <?php
-                                $position = '';
-                                $tvote = '';
+                                $position = array();
+                                $tvote = array();
                                 foreach ($getdata as $data) {
-                                    $position[] = $data->position_name;
+//                                    print_r($data);
+                                    if ($data->position_name == '') {
+                                        $position[] = '';
+                                    } else {
+                                        $position[] = $data->position_name;
+                                    }
                                 }
+//                                print_r($position);
                                 $pos = json_encode($position);
                                 foreach ($getdata as $total) {
                                     $tvote[] = $total->position;
@@ -153,7 +159,7 @@
 
         <!-- Demo scripts for this page-->
         <script src="{{ asset('public/js/demo/datatables-demo.js') }}"></script>
-        <script src="{{ asset('public/js/select2/select2.min.js') }}"></script>
+        <!--<script src="{{ asset('public/js/select2/select2.min.js') }}"></script>-->
         <!--<script src="{{ asset('public/js/demo/chart-bar-demo.js') }}"></script>-->
 
         <script>
@@ -165,7 +171,7 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 var ctx = document.getElementById("myBarChart");
 //var position = [];
 //var name=[];
-//var data =<?php // echo $pos      ?>;
+//var data =<?php // echo $pos       ?>;
 //console.log(data[0]);
 //for (var i in data) {
 //    position.push("total " + data[i].position_name);
