@@ -55,27 +55,27 @@
                                         <input type="text" class="form-control" id = "election_name" name = "election_name" value="<?php echo (isset($getdata) ? $getdata[0]->election_name : ''); ?>" required=""/>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+<!--                                <div class="form-group row">
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Select Type</label>
                                     <div class="col-sm-10">
                                         <select type="text" class="form-control select2 chosen" id = "cat" name = "election_type" required=""/>
                                         <option>Select Type</option>
                                         <?php
-                                        if (isset($getdata)) {
-                                            if ($getdata[0]->election_type == 'Private') {
-                                                echo '<option value = "Private" selected>Private</option> ';
-                                                echo '<option value="Public">Public</option>';
-                                            } elseif ($getdata[0]->election_type == 'Public') {
-                                                echo '<option value = "Private" >Private</option> ';
-                                                echo '<option value="Public" selected>Public</option>';
-                                            }
-                                        } else {
-                                            echo '<option value = "Private" >Private</option> ';
-                                            echo '<option value="Public" >Public</option>';
-                                        }
+//                                        if (isset($getdata)) {
+//                                            if ($getdata[0]->election_type == 'Private') {
+//                                                echo '<option value = "Private" selected>Private</option> ';
+//                                                echo '<option value="Public">Public</option>';
+//                                            } elseif ($getdata[0]->election_type == 'Public') {
+//                                                echo '<option value = "Private" >Private</option> ';
+//                                                echo '<option value="Public" selected>Public</option>';
+//                                            }
+//                                        } else {
+//                                            echo '<option value = "Private" >Private</option> ';
+//                                            echo '<option value="Public" >Public</option>';
+//                                        }
                                         ?>>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="form-group row">  
                                     <div class="col-sm-2"> </div>

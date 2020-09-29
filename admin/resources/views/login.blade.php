@@ -41,11 +41,16 @@
 
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                         <div id="errormsg"><br>
-                            <center></center>
+                            <center><?php if (session()->has('message')) { ?>
+                                <div class="alert alert-danger">
+                                        <?php echo session()->get('message') ?>
+                                    </div>
+                                <?php } ?>
+                            </center>
                         </div>
-                        </form>
+                    </form>
                 </div>
-            </div                                        >
+            </div>
         </div>
 
         <!-- Bootstrap core JavaScript-->

@@ -105,7 +105,7 @@
                                         if (isset($pos_id)) {
                                             ?>
                                         <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
-<!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac ?>">-->
+    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac  ?>">-->
                                         <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
                                         <?php
                                         $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
@@ -219,6 +219,12 @@ function poschange()
             });
 }
 ;
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.chosen').select2();
+            });
+
         </script>
     </body>
 </html>

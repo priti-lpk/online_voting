@@ -23,9 +23,9 @@ class LoginController extends Controller {
         $session = $request->session()->get('username');
         $data = DB::select('select id from admin where username=? and password=?', [$name, $pass]);
         if (count($data)) {
-            return view('dashboard');
+            return redirect('dashboard');
         } else {
-            return view('login');
+            return redirect()->back()->with('message', 'Authentication Fail');
         }
     }
 
@@ -62,5 +62,6 @@ class LoginController extends Controller {
             return '0';
         }
     }
+
 
 }

@@ -28,7 +28,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url('change_user_profile') }}">Change User Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('login') }}">Logout</a>
+                        <a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
                     </div>
                 </li>
             </ul>

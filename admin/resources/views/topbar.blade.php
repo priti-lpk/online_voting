@@ -26,7 +26,7 @@
                         <!--                <a class="dropdown-item" href="#">Settings</a>-->
                         <a class="dropdown-item" href="{{ url('change_password') }}">change Password</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('login') }}">Logout</a>
+                        <a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
                     </div>
                 </li>
             </ul>

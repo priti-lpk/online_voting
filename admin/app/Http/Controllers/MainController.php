@@ -19,7 +19,7 @@ class MainController extends Controller {
 
     function add_election(Request $request) {
         $election = $request->input('election_name');
-        $type = $request->input('election_type');
+        $type = 'Private';
         $data = array('election_name' => $election, 'election_type' => $type);
         DB::table('election_table')->insert($data);
         $q = DB::table('election_table')->toSql(); // Enable query log
@@ -34,7 +34,7 @@ class MainController extends Controller {
 
     function edit_election(Request $request, $id) {
         $position = $request->input('election_name');
-        $type = $request->input('election_type');
+        $type = 'Private';
         DB::update('update election_table set election_name = ?,election_type=? where id = ?', [$position, $type, $id]);
         return redirect('election');
     }
