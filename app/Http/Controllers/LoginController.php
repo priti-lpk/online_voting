@@ -31,7 +31,7 @@ class LoginController extends Controller {
             $request->session()->put('userid', $data[0]->id);
         }
         if (count($data)) {
-               return redirect('dashboard');
+            return redirect('dashboard');
         } else {
             return redirect()->back()->with('message', 'Authentication Fail');
         }
@@ -53,15 +53,14 @@ class LoginController extends Controller {
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');
         $email_id = $request->input('email_id');
-        $password = Hash::make($request->input('password'));
-//        print_R($password);
+        $password = md5($request->input('password'));
         $data1 = array('firstname' => $firstname, "lastname" => $lastname, "email_id" => $email_id, "password" => $password, "status" => 'true');
         DB::table('user_table')->insert($data1);
         $data = [
-        'from' => 'talk@lpktechnosoft.com',
-        'subject' => 'Your Hash Key',
-        'email' => $request->input('email_id'),
-        'password' => $password,
+            'from' => 'talk@lpktechnosoft.com',
+            'subject' => 'Your Hash Key',
+            'email' => $request->input('email_id'),
+            'password' => $password,
         ];
         Mail::to($email_id)->send(new TestEmail($data));
         return redirect('/');
@@ -73,8 +72,8 @@ class LoginController extends Controller {
 
     function change(Request $request) {
         $input = $request->all();
-        $getdata = DB::table('admin')
-                ->where('username', $input['id'])
+        $getdata = DB::table('user_table')
+                ->where('id', $input['id'])
                 ->get();
         $user = '';
         foreach ($getdata as $g) {
@@ -89,8 +88,22 @@ class LoginController extends Controller {
 
     function change_pass(Request $request) {
         $input = $request->all();
-        $pass = DB::table('admin')->where('username', $input['change'])->update(['password' => md5($input['new'])]);
+        $pass = DB::table('user_table')->where('id', $input['change'])->update(['password' => md5($input['new'])]);
         if ($pass == TRUE) {
+            $getdata = DB::table('user_table')
+                    ->where('id', $input['change'])
+                    ->get();
+            foreach ($getdata as $g) {
+                $email_id = $g->email_id;
+            }
+            $data = [
+                'from' => 'talk@lpktechnosoft.com',
+                'subject' => 'Your Hash Key',
+                'email' => $email_id,
+                'password' => md5($input['new']),
+            ];
+//            print_r($data);
+            Mail::to($email_id)->send(new TestEmail($data));
             return '1';
         } else {
             return '0';

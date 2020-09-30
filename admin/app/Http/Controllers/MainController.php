@@ -155,19 +155,25 @@ class MainController extends Controller {
         $lname = $request->input('last_name');
         $file = $request->file('image');
         $file1 = $request->file('symbol');
-        if (empty($_FILES['image']['name'])) {
-            $imageName = $id . '.' . $file->getClientOriginalExtension();
+        if (empty($file) && empty($file1)) {
+            DB::update('update candidates_table set position_id = ?,first_name=?,last_name=? where id = ?', [$position, $fname, $lname, $id]);
         } else {
-            $imageName = $id . '.' . $file->getClientOriginalExtension();
+            if (empty($file)) {
+                $imageName1 = $id . '.' . $file1->getClientOriginalExtension();
+                $file1->move(base_path('CandidatesSymbol'), $imageName1);
+                DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,symbol=? where id = ?', [$position, $fname, $lname, "CandidatesSymbol/" . $imageName1, $id]);
+            } if (empty($file1)) {
+                $imageName = $id . '.' . $file->getClientOriginalExtension();
+                $file->move(base_path('CandidatesImage'), $imageName);
+                DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,image=? where id = ?', [$position, $fname, $lname, "CandidatesImage/" . $imageName, $id]);
+            } if ($file && $file1) {
+                $imageName = $id . '.' . $file->getClientOriginalExtension();
+                $file->move(base_path('CandidatesImage'), $imageName);
+                $imageName1 = $id . '.' . $file1->getClientOriginalExtension();
+                $file1->move(base_path('CandidatesSymbol'), $imageName1);
+                DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,image=?,symbol=? where id = ?', [$position, $fname, $lname, "CandidatesImage/" . $imageName, "CandidatesSymbol/" . $imageName1, $id]);
+            }
         }
-        $file->move(base_path('CandidatesImage'), $imageName);
-        if (empty($lastdata->id)) {
-            $imageName1 = $id . '.' . $file1->getClientOriginalExtension();
-        } else {
-            $imageName1 = $id . '.' . $file1->getClientOriginalExtension();
-        }
-        $file1->move(base_path('CandidatesSymbol'), $imageName1);
-        DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,image=?,symbol=? where id = ?', [$position, $fname, $lname, "CandidatesImage/" . $imageName, "CandidatesSymbol/" . $imageName1, $id]);
         return back()->withInput();
     }
 

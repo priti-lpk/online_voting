@@ -49,7 +49,7 @@
                         <div class="col-xl-10">
                             <form action="" enctype="multipart/form-data">
                                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
-                                <input type = "hidden" name = "pwd_id" id = "pwd_id" value = "{{ session()->get('username')}}">
+                                <input type = "hidden" name = "pwd_id" id = "pwd_id" value = "{{ session()->get('userid')}}">
 
                                 <div class="form-group row">
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Old password</label>
@@ -217,7 +217,6 @@ $(document).ready(function () {
 //                    alert(data);
                     if (data == 1)
                     {
-                        // $('#compare').html('Password changed successfully');
                         location.href = alert('Password changed Successfully');
                         top.location = 'change_password';
                         $('#changePass').html('Change Now');

@@ -26,7 +26,7 @@
             <table style='padding: 10px;border: 1px solid #d2d2d2; font-size: 17px;' width='100%' border='0' cellspacing='0' cellpadding='0'>
                 <tr> 
                     <td class='subhead'>
-                        <h3><b>You Voting Details</b></h3>
+                        <h3><b>Your Voting Details</b></h3>
                         <p><b>Your Email:</b> <?php echo $data['email']; ?></p>
                         <p><b>Your Password:</b> <?php echo $data['password']; ?></p>
                     </td>

@@ -80,7 +80,7 @@
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Image</label>
                                     <div class="col-sm-10">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input form-control" name="image"  value="">
+                                            <input type="file" class="custom-file-input form-control" name="image"  value="<?php echo (isset($getdata) ? $getdata[0]->image : ''); ?>">
                                             <label class="custom-file-label"  for="customFile"><?php echo (isset($getdata) ? $getdata[0]->image : 'Choose Image'); ?></label>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Symbol</label>
                                     <div class="col-sm-10">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input form-control" name="symbol"  value="">
+                                            <input type="file" class="custom-file-input form-control" name="symbol"  value="<?php echo (isset($getdata) ? $getdata[0]->symbol : ''); ?>">
                                             <label class="custom-file-label"  for="customFile"><?php echo (isset($getdata) ? $getdata[0]->symbol : 'Choose Symbol'); ?></label>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@
                                 <div class="form-group row">  
                                     <div class="col-sm-2"> </div>
                                     <div class="col-sm-10">
-                                        <button  type="submit" id='submit-button' class="btn btn-primary btn-block w-md waves-effect waves-light">Submit</button>
+                                        <button  type="submit" id='submit-button' class="btn btn-primary btn-block w-md waves-effect waves-light"><?php echo (isset($getdata) ? 'Update' : 'Save'); ?></button>
                                     </div>
                                 </div>
 
