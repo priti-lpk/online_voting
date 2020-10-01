@@ -79,7 +79,7 @@ class LoginController extends Controller {
         foreach ($getdata as $g) {
             $user = $g->password;
         }
-        if ($user == md5($input['old'])) {
+        if ($user == ($input['old'])) {
             return "1";
         } else {
             return "0";
