@@ -18,7 +18,7 @@
         <link href="{{ asset('public/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="{{ asset('public/css/sb-admin.css') }}" rel="stylesheet">
+        <link href="{{ asset('public/vendor/sb-admin.css') }}" rel="stylesheet">
 
     </head>
 
@@ -32,17 +32,59 @@
             @include('sidebar') 
 
             <div id="content-wrapper">
-
                 <div class="container-fluid">
-
                     <!-- Breadcrumbs-->
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="{{ url('dashboard') }}">Dashboard</a>
                         </li>
-
                     </ol>
-                    
+                    <div class="row">
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="card text-white o-hidden h-100" style="background-color:#007bff !important">
+                                <div class="card-body">
+                                    <div class="card-body-icon">
+                                        <i class="fas fa-fw fa-life-ring"></i>
+                                    </div>
+                                    <?php
+                                    foreach ($user as $vote) {
+                                        ?>
+                                        <div class="mr-5">Total Users : <b><?php echo $vote->total; ?></b></div>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <a class="card-footer text-white clearfix small z-1" href="{{ url('view_user') }}">
+                                    <span class="float-left">View Details</span>
+                                    <span class="float-right">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="card text-white o-hidden h-100" style="background-color:#007bff !important">
+                                <div class="card-body">
+                                    <div class="card-body-icon">
+                                        <i class="fas fa-fw fa-life-ring"></i>
+                                    </div>
+                                    <?php
+                                    foreach ($user as $vote) {
+                                        ?>
+                                        <div class="mr-5">Current Election : <b><?php echo $vote->total; ?></b></div>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <a class="card-footer text-white clearfix small z-1" href="{{ url('view_user') }}">
+                                    <span class="float-left">View Details</span>
+                                    <span class="float-right">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
                 <!-- Sticky Footer -->

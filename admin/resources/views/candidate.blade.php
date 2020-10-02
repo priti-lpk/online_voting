@@ -19,6 +19,7 @@
 
         <!-- Custom styles for this template-->
         <link href="{{ asset('public/css/sb-admin.css') }}" rel="stylesheet">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     </head>
 
@@ -49,9 +50,25 @@
                             <form action="<?php echo (isset($getdata)) ? URL('edit_candidate/' . $getdata[0]->id) : URL('add_candidate'); ?>" method="post" enctype="multipart/form-data">
                                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                                 <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Select Election</label>
+                                    <div class="col-sm-10">
+                                        <select type="text" class="form-control select2 chosen" id = "ele_id" name = "election_id" required="" onchange="poschange();"/>
+                                        <option>Select Election</option>       
+                                        <?php
+                                        foreach ($election as $pos)
+                                            if (isset($getdata)) {
+                                                echo "<option  value=" . $pos->id . " " . ($pos->id == $getdata[0]->election_id ? 'selected' : '') . ">" . $pos->election_name . "</option>";
+                                            } else {
+                                                echo "<option  value=" . $pos->id . " >" . $pos->election_name . "</option>";
+                                            }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Select Position</label>
                                     <div class="col-sm-10">
-                                        <select type="text" class="form-control select2 chosen" id = "cat" name = "position_id" required=""/>
+                                        <select type="text" class="form-control select2 chosen" id = "pos_id" name = "position_id" required=""/>
                                         <option>Select Position</option>       
                                         <?php
                                         foreach ($position as $pos)
@@ -114,6 +131,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Election Name</th>
                                             <th>Position</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
@@ -128,6 +146,7 @@
                                         foreach ($candidate as $can) {
                                             echo "<tr>";
                                             echo "<td>" . $k++ . "</td>";
+                                            echo "<td>" . $can->election_name . "</td>";
                                             echo "<td>" . $can->position_name . "</td>";
                                             echo "<td>" . $can->first_name . "</td>";
                                             echo "<td>" . $can->last_name . "</td>";
@@ -201,9 +220,39 @@
         <script src="{{ asset('public/vendor/datatables/responsive.bootstrap4.min.js') }}"></script>
         <script src="{{ asset('public/js/datatables.init.js') }}"></script>
         <script type="text/javascript">
-$(document).ready(function () {
-    $('.chosen').select2();
-});
+                                            function poschange()
+                                            {
+                                                $.ajaxSetup({
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                    }
+                                                });
+
+                                                var ele = document.getElementById("ele_id").value;
+                                                var dataString = 'ele_id=' + ele;
+//                                                alert(dataString);
+                                                $.ajax
+                                                        ({
+                                                            url: "<?php echo URL('getdata') ?>",
+                                                            type: 'POST',
+                                                            data: dataString,
+                                                            success: function (html)
+                                                            {
+//                                                                alert(html);
+                                                                $("#pos_id").html(html);
+                                                            },
+                                                            error: function (errorThrown) {
+                                                                alert(errorThrown);
+                                                                alert("There is an error with AJAX!");
+                                                            }
+                                                        });
+                                            }
+                                            ;
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.chosen').select2();
+            });
 
         </script>
     </body>

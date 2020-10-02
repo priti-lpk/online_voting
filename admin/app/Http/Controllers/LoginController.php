@@ -30,7 +30,8 @@ class LoginController extends Controller {
     }
 
     function dashboard() {
-        return view('dashboard');
+        $getdata = DB::select("select COUNT(id) as total FROM user_table WHERE status='true'");
+        return view('dashboard', ['user' => $getdata]);
     }
 
     function change_password(Request $request) {

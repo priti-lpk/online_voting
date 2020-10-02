@@ -51,6 +51,9 @@ Route::get('/change_password', 'LoginController@change_password');
 Route::post('/change', 'LoginController@change');
 Route::post('/update_pass', 'LoginController@change_pass');
 
+//Get pos data
+Route::post('getdata', 'MainController@get_sposition');
+
 //Logout
 Route::get('/logout', function () {
     return view('login');

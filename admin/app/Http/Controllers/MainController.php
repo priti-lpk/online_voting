@@ -87,16 +87,19 @@ class MainController extends Controller {
     }
 
     function candidate() {
+        $election = DB::table('election_table')->select('id', 'election_name')->get();
         $candidate = DB::table('candidates_table')
-                ->select('candidates_table.id', 'candidates_table.position_id', 'position_table.position_name', 'candidates_table.first_name', 'candidates_table.last_name', 'candidates_table.image', 'candidates_table.symbol')
+                ->select('candidates_table.id', 'candidates_table.position_id', 'position_table.position_name', 'candidates_table.first_name', 'candidates_table.last_name', 'candidates_table.image', 'candidates_table.symbol','election_table.election_name')
                 ->join('position_table', 'candidates_table.position_id', '=', 'position_table.id')
+                ->join('election_table', 'candidates_table.election_id', '=', 'election_table.id')
                 ->get();
         $position = DB::table('position_table')->select('id', 'position_name')->get();
-        return view('candidate', ['position' => $position, 'candidate' => $candidate]);
+        return view('candidate', ['position' => $position, 'candidate' => $candidate, 'election' => $election]);
     }
 
     function add_candidate(Request $request) {
         $position = $request->input('position_id');
+        $election = $request->input('election_id');
         $fname = $request->input('first_name');
         $lname = $request->input('last_name');
         $file = $request->file('image');
@@ -119,45 +122,51 @@ class MainController extends Controller {
             $imageName1 = $lastdata->id + 1 . '.' . $file1->getClientOriginalExtension();
         }
         $file1->move(base_path('CandidatesSymbol'), $imageName1);
-        $data = array('position_id' => $position, "first_name" => $fname, "last_name" => $lname, "image" => "CandidatesImage/" . $imageName, "symbol" => "CandidatesSymbol/" . $imageName1);
+        $data = array('position_id' => $position, "election_id" => $election, "first_name" => $fname, "last_name" => $lname, "image" => "CandidatesImage/" . $imageName, "symbol" => "CandidatesSymbol/" . $imageName1);
         DB::table('candidates_table')->insert($data);
         $q = DB::table('candidates_table')->toSql();
         return back()->withInput();
     }
 
     function get_candidate(Request $request, $id) {
+        $election = DB::table('election_table')->select('id', 'election_name')->get();
         $getdata = DB::select('select * from candidates_table where id = ?', [$id]);
         $candidate = DB::table('candidates_table')
-                ->select('candidates_table.id', 'position_table.position_name', 'candidates_table.first_name', 'candidates_table.last_name', 'candidates_table.image', 'candidates_table.symbol')
+                ->select('candidates_table.id', 'position_table.position_name', 'candidates_table.first_name', 'candidates_table.last_name', 'candidates_table.image', 'candidates_table.symbol', 'candidates_table.election_id')
                 ->join('position_table', 'candidates_table.position_id', '=', 'position_table.id')
+                ->join('election_table', 'candidates_table.election_id', '=', 'election_table.id')
                 ->get();
-        $position = DB::table('position_table')->select('id', 'position_name')->get();
-        return view('candidate', ['position' => $position, 'candidate' => $candidate, 'getdata' => $getdata]);
+        foreach ($candidate as $can) {
+            $eid = $can->election_id;
+        }
+        $position = DB::table('position_table')->select('id', 'position_name')->where('election_id', $eid)->get();
+        return view('candidate', ['position' => $position, 'candidate' => $candidate, 'getdata' => $getdata, 'election' => $election]);
     }
 
     function edit_candidate(Request $request, $id) {
         $position = $request->input('position_id');
+        $election = $request->input('election_id');
         $fname = $request->input('first_name');
         $lname = $request->input('last_name');
         $file = $request->file('image');
         $file1 = $request->file('symbol');
         if (empty($file) && empty($file1)) {
-            DB::update('update candidates_table set position_id = ?,first_name=?,last_name=? where id = ?', [$position, $fname, $lname, $id]);
+            DB::update('update candidates_table set position_id = ?,election_id=?,first_name=?,last_name=? where id = ?', [$position, $election, $fname, $lname, $id]);
         } else {
             if (empty($file)) {
                 $imageName1 = $id . '.' . $file1->getClientOriginalExtension();
                 $file1->move(base_path('CandidatesSymbol'), $imageName1);
-                DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,symbol=? where id = ?', [$position, $fname, $lname, "CandidatesSymbol/" . $imageName1, $id]);
+                DB::update('update candidates_table set position_id = ?,election_id=?,first_name=?,last_name=?,symbol=? where id = ?', [$position, $election, $fname, $lname, "CandidatesSymbol/" . $imageName1, $id]);
             } if (empty($file1)) {
                 $imageName = $id . '.' . $file->getClientOriginalExtension();
                 $file->move(base_path('CandidatesImage'), $imageName);
-                DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,image=? where id = ?', [$position, $fname, $lname, "CandidatesImage/" . $imageName, $id]);
+                DB::update('update candidates_table set position_id = ?,election_id=?,first_name=?,last_name=?,image=? where id = ?', [$position, $election, $fname, $lname, "CandidatesImage/" . $imageName, $id]);
             } if ($file && $file1) {
                 $imageName = $id . '.' . $file->getClientOriginalExtension();
                 $file->move(base_path('CandidatesImage'), $imageName);
                 $imageName1 = $id . '.' . $file1->getClientOriginalExtension();
                 $file1->move(base_path('CandidatesSymbol'), $imageName1);
-                DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,image=?,symbol=? where id = ?', [$position, $fname, $lname, "CandidatesImage/" . $imageName, "CandidatesSymbol/" . $imageName1, $id]);
+                DB::update('update candidates_table set position_id = ?,election_id=?,first_name=?,last_name=?,image=?,symbol=? where id = ?', [$position, $election, $fname, $lname, "CandidatesImage/" . $imageName, "CandidatesSymbol/" . $imageName1, $id]);
             }
         }
         return redirect('/candidate');
@@ -207,6 +216,21 @@ class MainController extends Controller {
             return 1;
         } else {
             return 0;
+        }
+    }
+
+    function get_sposition(Request $request) {
+        $pos = $request->ele_id;
+        $election = DB::table('position_table')
+                ->select('*')
+                ->where('election_id', $pos)
+                ->get();
+        foreach ($election as $pos) {
+            if (isset($getdata)) {
+                echo "<option  value=" . $pos->id . " " . ($pos->id == $getdata[0]->position_id ? 'selected' : '') . ">" . $pos->position_name . "</option>";
+            } else {
+                echo "<option  value=" . $pos->id . " >" . $pos->position_name . "</option>";
+            }
         }
     }
 

@@ -51,6 +51,7 @@ Route::post('Email', 'SendEmail@send_mail');
 
 //Get pos data
 Route::post('getdata', 'MainController@get_position');
+
 //Logout
 Route::get('/logout', function () {
     return view('login');

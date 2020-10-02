@@ -118,25 +118,52 @@
                                     <tbody>
                                         <?php
                                         if (isset($pos_id) && isset($ele_id)) {
-                                            ?>
-                                        <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
-                                        <input type = "hidden" name = "election_id" value = "<?php echo $ele_id ?>" >
-    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac        ?>">-->
-                                        <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
-                                        <?php
-                                        $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
-                                        $i = 1;
-                                        foreach ($getdata as $can) {
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $i++ ?></td>
-                                                <td><input type = 'radio' class = 'create' name="candidates_id" value="<?php echo $can->id ?>"/></td>
-                                                <td><img src="<?php echo url('admin/' . $can->image); ?>" id='image-link' alt='image' class='img-responsive' height=50 width=50'></td>
-                                                <td><?php echo $can->first_name . " " . $can->last_name ?></td>
-                                                <td><img src="<?php echo url('admin/' . $can->symbol); ?>" id='image-link' alt='image' class='img-responsive' height=50 width=50'></td>
-                                            </tr>
-                                            <?php
+                                            $ldate = date('Y-m-d');
+                                            $time = date("h:i:s a", time());
+                                            $election = DB::table('election_table')
+                                                    ->select('*')
+                                                    ->where('election_type', 'private')
+                                                    ->where('election_date', $ldate)
+                                                    ->get();
+                                            foreach ($election as $ele) {
+                                                print_r($ele->election_date);
+                                                print_r($ldate);
+                                                if ($ele->id == $ele_id) {
+                                                    if ($ele->election_date == $ldate) {
+                                                        
+                                                        if ($ele->start_time < $time && $ele->end_time > $time) {
+                                                            ?>
+                                                        <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
+                                                        <input type = "hidden" name = "election_id" value = "<?php echo $ele_id ?>" >
+                    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac                       ?>">-->
+                                                        <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
+                                                        <?php
+                                                        $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
+                                                        $i = 1;
+                                                        foreach ($getdata as $can) {
+                                                            ?>
+                                                            <tr>
+                                                                <td><?php echo $i++ ?></td>
+                                                                <td><input type = 'radio' class = 'create' name="candidates_id" value="<?php echo $can->id ?>"/></td>
+                                                                <td><img src="<?php echo url('admin/' . $can->image); ?>" id='image-link' alt='image' class='img-responsive' height=50 width=50'></td>
+                                                                <td><?php echo $can->first_name . " " . $can->last_name ?></td>
+                                                                <td><img src="<?php echo url('admin/' . $can->symbol); ?>" id='image-link' alt='image' class='img-responsive' height=50 width=50'></td>
+                                                            </tr>
+                                                            <?php
+                                                        }
+                                                    } else {
+                                                        echo "<h4>Election Complete...!</h4>";
+                                                    }
+                                                } else {
+                                                    echo"AS";
+                                                    echo "<h4>Election Complete...!</h4>";
+                                                }
+                                            }
                                         }
+                                        ?>
+
+                                        <?php
+//                                        }
                                     }
                                     ?>
                                     </tbody>
