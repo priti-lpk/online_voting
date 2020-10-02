@@ -123,19 +123,19 @@
                                             $election = DB::table('election_table')
                                                     ->select('*')
                                                     ->where('election_type', 'private')
-                                                    ->where('election_date', $ldate)
+//                                                    ->where('election_date', $ldate)
                                                     ->get();
                                             foreach ($election as $ele) {
-                                                print_r($ele->election_date);
-                                                print_r($ldate);
+//                                                print_r($ele->election_date);
+//                                                print_r($ldate);
                                                 if ($ele->id == $ele_id) {
                                                     if ($ele->election_date == $ldate) {
-                                                        
+
                                                         if ($ele->start_time < $time && $ele->end_time > $time) {
                                                             ?>
                                                         <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
                                                         <input type = "hidden" name = "election_id" value = "<?php echo $ele_id ?>" >
-                    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac                       ?>">-->
+                    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac                          ?>">-->
                                                         <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
                                                         <?php
                                                         $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
@@ -154,8 +154,9 @@
                                                     } else {
                                                         echo "<h4>Election Complete...!</h4>";
                                                     }
+                                                } elseif ($ele->election_date > $ldate) {
+                                                    echo "<h4>Election Coming...!</h4>";
                                                 } else {
-                                                    echo"AS";
                                                     echo "<h4>Election Complete...!</h4>";
                                                 }
                                             }
