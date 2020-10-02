@@ -13,14 +13,17 @@ use Auth;
 class MainController extends Controller {
 
     function election() {
-        $election = DB::table('election_table')->select('id', 'election_name', 'election_type')->get();
+        $election = DB::table('election_table')->select('*')->get();
         return view('election', ['election' => $election]);
     }
 
     function add_election(Request $request) {
         $election = $request->input('election_name');
         $type = 'Private';
-        $data = array('election_name' => $election, 'election_type' => $type);
+        $date = $request->input('election_date');
+        $s_time = $request->input('start_time');
+        $e_time = $request->input('end_time');
+        $data = array('election_name' => $election, 'election_type' => $type, 'election_date' => $date, 'start_time' => $s_time, 'end_time' => $e_time);
         DB::table('election_table')->insert($data);
         $q = DB::table('election_table')->toSql(); // Enable query log
         return back()->withInput();
@@ -28,14 +31,17 @@ class MainController extends Controller {
 
     function get_election(Request $request, $id) {
         $getdata = DB::select('select * from election_table where id = ?', [$id]);
-        $election = DB::table('election_table')->select('id', 'election_name', 'election_type')->get();
+        $election = DB::table('election_table')->select('*')->get();
         return view('election', ['election' => $election, 'getdata' => $getdata]);
     }
 
     function edit_election(Request $request, $id) {
         $position = $request->input('election_name');
         $type = 'Private';
-        DB::update('update election_table set election_name = ?,election_type=? where id = ?', [$position, $type, $id]);
+        $date = $request->input('election_date');
+        $s_time = $request->input('start_time');
+        $e_time = $request->input('end_time');
+        DB::update('update election_table set election_name = ?,election_type=?,election_date=?,start_time=?,end_time=? where id = ?', [$position, $type, $date, $s_time, $e_time, $id]);
         return redirect('election');
     }
 
@@ -90,14 +96,6 @@ class MainController extends Controller {
     }
 
     function add_candidate(Request $request) {
-//        $getdata = DB::select('select * from candidates_table order by id desc limit 1');
-//        if (empty($getdata)) {
-//            $user = 1;
-//        } else {
-//            foreach ($getdata as $g) {
-//                $user = $g->id + 1;
-//            }
-//        }
         $position = $request->input('position_id');
         $fname = $request->input('first_name');
         $lname = $request->input('last_name');
@@ -121,18 +119,6 @@ class MainController extends Controller {
             $imageName1 = $lastdata->id + 1 . '.' . $file1->getClientOriginalExtension();
         }
         $file1->move(base_path('CandidatesSymbol'), $imageName1);
-//        if ($files = $request->file('image')) {
-//            $destinationPath = base_path('\CandidatesImage'); // upload path
-//            $profileImage = $user . "." . $files->getClientOriginalExtension();
-//            $files->move($destinationPath, $profileImage);
-//            $insert['image'] = "$profileImage";
-//        }
-//        if ($sfiles = $request->file('symbol')) {
-//            $sdestinationPath = base_path('\CandidatesSymbol'); // upload path
-//            $sprofileImage = $user . "." . $sfiles->getClientOriginalExtension();
-//            $sfiles->move($sdestinationPath, $sprofileImage);
-//            $sinsert['symbol'] = "$sprofileImage";
-//        }
         $data = array('position_id' => $position, "first_name" => $fname, "last_name" => $lname, "image" => "CandidatesImage/" . $imageName, "symbol" => "CandidatesSymbol/" . $imageName1);
         DB::table('candidates_table')->insert($data);
         $q = DB::table('candidates_table')->toSql();
@@ -174,7 +160,7 @@ class MainController extends Controller {
                 DB::update('update candidates_table set position_id = ?,first_name=?,last_name=?,image=?,symbol=? where id = ?', [$position, $fname, $lname, "CandidatesImage/" . $imageName, "CandidatesSymbol/" . $imageName1, $id]);
             }
         }
-        return back()->withInput();
+        return redirect('/candidate');
     }
 
     function del_candidate(Request $request, $id) {

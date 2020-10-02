@@ -55,6 +55,22 @@
                                         <input type="text" class="form-control" id = "election_name" name = "election_name" value="<?php echo (isset($getdata) ? $getdata[0]->election_name : ''); ?>" required=""/>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Election Date</label>
+                                    <div class="col-sm-10">
+                                        <input type="date" class="form-control" id = "election_date" name = "election_date" value="<?php echo (isset($getdata) ? $getdata[0]->election_date : ''); ?>" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Start Time</label>
+                                    <div class="col-sm-4">
+                                        <input type="time" class="form-control" id = "start_time" name = "start_time" value="<?php echo (isset($getdata) ? $getdata[0]->start_time : ''); ?>" required=""/>
+                                    </div>
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">End Time</label>
+                                    <div class="col-sm-4">
+                                        <input type="time" class="form-control" id = "end_time" name = "end_time" value="<?php echo (isset($getdata) ? $getdata[0]->end_time : ''); ?>" required=""/>
+                                    </div>
+                                </div>
 <!--                                <div class="form-group row">
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Select Type</label>
                                     <div class="col-sm-10">
@@ -76,7 +92,6 @@
                                         ?>>
                                         </select>
                                     </div>-->
-                                </div>
                                 <div class="form-group row">  
                                     <div class="col-sm-2"> </div>
                                     <div class="col-sm-10">
@@ -99,6 +114,9 @@
                                             <th>No</th>
                                             <th>Election Name</th>
                                             <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -107,9 +125,12 @@
                                         $k = 1;
                                         foreach ($election as $pos) {
                                             echo "<tr>";
-                                            echo "<td>" . $k . "</td>";
+                                            echo "<td>" . $k++ . "</td>";
                                             echo "<td>" . $pos->election_name . "</td>";
                                             echo "<td>" . $pos->election_type . "</td>";
+                                            echo "<td>" . $pos->election_date . "</td>";
+                                            echo "<td>" . $pos->start_time . "</td>";
+                                            echo "<td>" . $pos->end_time . "</td>";
                                             ?>
                                         <td><a href='<?php echo route('election.edit', $pos->id) ?>' class='btn btn-primary waves-effect waves-light'>Edit</a>&nbsp;
                                             <a href='<?php echo route('election.delete', $pos->id) ?>' class='btn btn-primary waves-effect waves-light'>Delete</a></td>

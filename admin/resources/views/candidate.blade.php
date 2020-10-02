@@ -127,12 +127,22 @@
                                         $k = 1;
                                         foreach ($candidate as $can) {
                                             echo "<tr>";
-                                            echo "<td>" . $k . "</td>";
+                                            echo "<td>" . $k++ . "</td>";
                                             echo "<td>" . $can->position_name . "</td>";
                                             echo "<td>" . $can->first_name . "</td>";
                                             echo "<td>" . $can->last_name . "</td>";
-                                            echo "<td><img src='" . url($can->image) . "' alt='image' class='img-responsive' height=50 width=50></a></td>";
-                                            echo "<td><img src='" . url($can->symbol) . "' alt='image' class='img-responsive' height=50 width=50></a></td>";
+                                            if (is_file($can->image)) {
+                                                $FileDetails = stat($can->image);
+                                                echo '<td><img src="' . url($can->image) . '?MT=' . dechex($FileDetails['mtime']) . '" style="width:50px; height:50px;"/></td>';
+                                            } else {
+                                                echo "<td><img src='" . url($can->image) . "' alt='image' style='width:50px; height:50px;'></td>";
+                                            }
+                                            if (is_file($can->symbol)) {
+                                                $FileDetails = stat($can->symbol);
+                                                echo '<td><img src="' . url($can->symbol) . '?MT=' . dechex($FileDetails['mtime']) . '" style="width:50px; height:50px;"/></td>';
+                                            } else {
+                                                echo "<td><img src='" . url($can->symbol) . "' alt='image' style='width:50px; height:50px;'></td>";
+                                            }
                                             ?>
                                         <td><a href='<?php echo route('candidate.edit', $can->id) ?>' class='btn btn-primary waves-effect waves-light'>Edit</a>&nbsp;
                                             <a href='<?php echo route('candidate.delete', $can->id) ?>' class='btn btn-primary waves-effect waves-light'>Delete</a></td>

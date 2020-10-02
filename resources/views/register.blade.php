@@ -69,16 +69,16 @@
                                 <p id = 'compare'></p>
                             </div>
                         </div>
-<!--                        <div class="form-group">
-                            <div class="form-row">
-                                <div class="col-md-6">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input form-control" name="image">
-                                        <label class="custom-file-label"  for="customFile">Choose Profile</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
+                        <!--                        <div class="form-group">
+                                                    <div class="form-row">
+                                                        <div class="col-md-6">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input form-control" name="image">
+                                                                <label class="custom-file-label"  for="customFile">Choose Profile</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
                         <button type="submit" class="btn btn-primary btn-block">Register</button>
                     </form>
                 </div>

@@ -14,21 +14,27 @@ class MainController extends Controller {
 
     function voting(Request $request) {
         $pos = $request->input('position_id');
+        $ele = $request->input('election_id');
         $position = DB::table('position_table')
                 ->select('position_table.id', 'position_table.position_name')
-                ->join('election_table','position_table.election_id','=','election_table.id')
-                ->where('election_type','private')
+                ->join('election_table', 'position_table.election_id', '=', 'election_table.id')
+                ->where('election_type', 'private')
                 ->get();
-        return view('voting', ['position' => $position, 'pos_id' => $pos]);
+        $election = DB::table('election_table')
+                ->select('*')
+                ->where('election_type', 'private')
+                ->get();
+        return view('voting', ['position' => $position, 'pos_id' => $pos, 'election' => $election, 'ele_id' => $ele]);
     }
 
     function add_vote(Request $request) {
         $position_id = $request->input('position_id');
+        $election_id = $request->input('election_id');
         $candidates_id = $request->input('candidates_id');
         $user_id = $request->input('user_id');
 //        $mac_address = $request->input('mac_address');
 
-        $data = array('position_id' => $position_id, "candidates_id" => $candidates_id, "user_id" => $user_id);
+        $data = array('position_id' => $position_id, "election_id"=>$election_id,"candidates_id" => $candidates_id, "user_id" => $user_id);
         DB::table('voting_table')->insert($data);
         $q = DB::table('voting_table')->toSql();
         return back()->withInput();
@@ -81,6 +87,21 @@ class MainController extends Controller {
             @unlink($image_path1);
             DB::delete('delete from candidates_table where id = ?', [$id]);
             return redirect('candidate');
+        }
+    }
+
+    function get_position(Request $request) {
+        $pos = $request->ele_id;
+        $election = DB::table('position_table')
+                ->select('*')
+                ->where('election_id', $pos)
+                ->get();
+        foreach ($election as $pos) {
+            if (isset($getdata)) {
+                echo "<option  value=" . $pos->id . " " . ($pos->id == $getdata[0]->position_id ? 'selected' : '') . ">" . $pos->position_name . "</option>";
+            } else {
+                echo "<option  value=" . $pos->id . " >" . $pos->position_name . "</option>";
+            }
         }
     }
 

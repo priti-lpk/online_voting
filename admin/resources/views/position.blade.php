@@ -101,7 +101,7 @@
                                         $k = 1;
                                         foreach ($position as $pos) {
                                             echo "<tr>";
-                                            echo "<td>" . $k . "</td>";
+                                            echo "<td>" . $k++ . "</td>";
                                             echo "<td>" . $pos->election_name . "</td>";
                                             echo "<td>" . $pos->position_name . "</td>";
                                             ?>

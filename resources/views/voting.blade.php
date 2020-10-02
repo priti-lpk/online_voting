@@ -28,6 +28,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
 
         <title>Voting</title>
 
@@ -69,8 +70,22 @@
                             <form action="" method="get" enctype="multipart/form-data">
                                 <!--<input name="_token" type="hidden" value="{{ csrf_token() }}"/>-->
                                 <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Select Election</label>
+                                    <div class="col-sm-4" style="margin-left: -40px">
+                                        <select type="text" class="form-control select2 chosen" id = "ele_id" name = "election_id" required="" onchange="poschange();"/>
+                                        <option>Select Election</option>       
+                                        <?php
+                                        foreach ($election as $ele)
+                                            if (isset($getdata)) {
+                                                echo "<option  value=" . $ele->id . " " . ($ele->id == $getdata[0]->election_name ? 'selected' : '') . ">" . $ele->election_name . "</option>";
+                                            } else {
+                                                echo "<option  value=" . $ele->id . " >" . $ele->election_name . "</option>";
+                                            }
+                                        ?>
+                                        </select>
+                                    </div>
                                     <label for="example-text-input" class="col-sm-2 col-form-label">Select Position</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4" style="margin-left: -40px;">
                                         <select type="text" class="form-control select2 chosen" id = "pos_id" name = "position_id" required=""/>
                                         <option>Select Position</option>       
                                         <?php
@@ -102,10 +117,11 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if (isset($pos_id)) {
+                                        if (isset($pos_id) && isset($ele_id)) {
                                             ?>
                                         <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
-    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac  ?>">-->
+                                        <input type = "hidden" name = "election_id" value = "<?php echo $ele_id ?>" >
+    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac        ?>">-->
                                         <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
                                         <?php
                                         $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
@@ -194,31 +210,34 @@
         <script src="{{ asset('public/vendor/datatables/responsive.bootstrap4.min.js') }}"></script>
         <script src="{{ asset('public/js/datatables.init.js') }}"></script>
         <script type="text/javascript">
-function poschange()
-{
+                                            function poschange()
+                                            {
+                                                $.ajaxSetup({
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                    }
+                                                });
 
-    var pos = document.getElementById("pos_id").value;
-    var dataString = 'pos_id=' + pos;
-    $.ajax
-            ({
-                url: "<?php echo URL('getdata') ?>",
-                datatype: "html",
-                data: dataString,
-                cache: false,
-                success: function (html)
-                {
-                    alert(html);
-                    alert(Object.keys(html).length);
-//                                                                alert(len);
-                    $("#sub_list").html(html);
-                },
-                error: function (errorThrown) {
-                    alert(errorThrown);
-                    alert("There is an error with AJAX!");
-                }
-            });
-}
-;
+                                                var ele = document.getElementById("ele_id").value;
+                                                var dataString = 'ele_id=' + ele;
+//                                                alert(dataString);
+                                                $.ajax
+                                                        ({
+                                                            url: "<?php echo URL('getdata') ?>",
+                                                            type: 'POST',
+                                                            data: dataString,
+                                                            success: function (html)
+                                                            {
+//                                                                alert(html);
+                                                                $("#pos_id").html(html);
+                                                            },
+                                                            error: function (errorThrown) {
+                                                                alert(errorThrown);
+                                                                alert("There is an error with AJAX!");
+                                                            }
+                                                        });
+                                            }
+                                            ;
         </script>
         <script type="text/javascript">
             $(document).ready(function () {

@@ -1,15 +1,18 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+  |--------------------------------------------------------------------------
+  | Web Routes
+  |--------------------------------------------------------------------------
+  |
+  | Here is where you can register web routes for your application. These
+  | routes are loaded by the RouteServiceProvider within a group which
+  | contains the "web" middleware group. Now create something great!
+  |
+ */
 //Login page
 Route::get('/', function () {
     return view('login');
@@ -21,7 +24,7 @@ Route::get('/register', function () {
 });
 //Login Controller
 Route::get('/login', 'LoginController@index');
- 
+
 //Dashboard
 Route::get('/dashboard', 'LoginController@dashboard');
 Route::post('/checklogin', 'LoginController@checklogin');
@@ -46,6 +49,8 @@ Route::post('/update_pass', 'LoginController@change_pass');
 Route::resource('sendemail', 'SendEmail');
 Route::post('Email', 'SendEmail@send_mail');
 
+//Get pos data
+Route::post('getdata', 'MainController@get_position');
 //Logout
 Route::get('/logout', function () {
     return view('login');
