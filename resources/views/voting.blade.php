@@ -119,6 +119,7 @@
                                         <?php
                                         if (isset($pos_id) && isset($ele_id)) {
                                             $ldate = date('Y-m-d');
+                                            date_default_timezone_set('Asia/Kolkata');
                                             $time = date("h:i:s a", time());
                                             $election = DB::table('election_table')
                                                     ->select('*')
