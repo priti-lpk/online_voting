@@ -117,18 +117,17 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $msg = '';
                                         if (isset($pos_id) && isset($ele_id)) {
                                             $ldate = date('Y-m-d');
                                             date_default_timezone_set('Asia/Kolkata');
-                                            $time = date("h:i:s a", time());
+                                            $time = date("H:i:s", time());
                                             $election = DB::table('election_table')
                                                     ->select('*')
                                                     ->where('election_type', 'private')
 //                                                    ->where('election_date', $ldate)
                                                     ->get();
                                             foreach ($election as $ele) {
-//                                                print_r($ele->election_date);
-//                                                print_r($ldate);
                                                 if ($ele->id == $ele_id) {
                                                     if ($ele->election_date == $ldate) {
 
@@ -136,7 +135,7 @@
                                                             ?>
                                                         <input type = "hidden" name = "position_id" value = "<?php echo $pos_id ?>" >
                                                         <input type = "hidden" name = "election_id" value = "<?php echo $ele_id ?>" >
-                    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac                          ?>">-->
+                    <!--                                        <input type="hidden" name="mac_address" value="<?php // echo $mac                                ?>">-->
                                                         <input type="hidden" name="user_id" value="<?php echo session()->get('userid') ?>">
                                                         <?php
                                                         $getdata = DB::select('select * from candidates_table where position_id = ?', [$pos_id]);
@@ -153,11 +152,13 @@
                                                             <?php
                                                         }
                                                     } else {
+                                                        $msg .= 'false';
                                                         echo "<h4>Election Complete...!</h4>";
                                                     }
                                                 } elseif ($ele->election_date > $ldate) {
                                                     echo "<h4>Election Coming...!</h4>";
                                                 } else {
+                                                    $msg .= 'false';
                                                     echo "<h4>Election Complete...!</h4>";
                                                 }
                                             }
@@ -176,16 +177,19 @@
                                     <div class="col-sm-2"> </div>
                                     <div class="col-sm-10">
                                         <?php
-                                        $data = '';
-                                        if (isset($pos_id)) {
-                                            $address = DB::select('select user_id from voting_table where position_id=' . $pos_id . ' and user_id=' . session()->get('userid'));
-                                            if ($address == Array()) {
-                                                ?>
-                                                <button  type="submit" id='submit-button' class="btn btn-primary btn-block w-md waves-effect waves-light">Submit</button>
-                                                <?php
-                                            } else {
-                                                echo "<h4>You are already give vote...!</h4>";
+                                        if ($msg != 'false') {
+                                            if (isset($pos_id)) {
+                                                $address = DB::select('select user_id from voting_table where election_id=' . $ele_id . ' and position_id=' . $pos_id . ' and user_id=' . session()->get('userid'));
+                                                if ($address == Array()) {
+                                                    ?>
+                                                    <button  type="submit" id='submit-button' class="btn btn-primary btn-block w-md waves-effect waves-light">Submit</button>
+                                                    <?php
+                                                } else {
+                                                    echo "<h4>You are already give vote...!</h4>";
+                                                }
                                             }
+                                        } else {
+                                            
                                         }
                                         ?>
                                     </div>
