@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
-
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <title>User Register</title>
 
         <!-- Custom fonts for this template-->
@@ -27,7 +25,7 @@
                 <div class="card-header">Register an Account</div>
                 <div class="card-body">
                     <form method="post" action="{{ URL::to('/add_register') }}">
-                        <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+                        <!--<input name="_token" type="hidden" value="{{ csrf_token() }}"/>-->
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
@@ -46,8 +44,11 @@
                         </div>
                         <div class="form-group">
                             <div class="form-label-group">
-                                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email_id">
+                                <input type="email" id="email_id" class="form-control" placeholder="Email address" name="email_id" onblur="chkemail();">
                                 <label for="inputEmail">Email address</label>
+                            </div>
+                            <div class = "col-md-12">
+                                <p id = 'waitFor'></p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -113,27 +114,62 @@
         <script src="{{ asset('public/vendor/datatables/buttons.print.min.js') }}"></script>
         <script src="{{ asset('public/vendor/datatables/buttons.colVis.min.js') }}"></script>
         <!-- Responsive examples -->
-        <script src="{{ asset('public/vendor/datatables/dataTables.responsive.min.js') }}"></script>
+        <!--<script src="{{ asset('public/vendor/datatables/dataTables.responsive.min.js') }}"></script>-->
         <script src="{{ asset('public/vendor/datatables/responsive.bootstrap4.min.js') }}"></script>
         <script src="{{ asset('public/js/datatables.init.js') }}"></script>
         <script>
-$('#con_pwd').on('blur', function () {
-    if ($('#new_pwd').val() != $('#con_pwd').val())
-    {
-        $('#compare').html('Both passwords mismatched!');
-        bothMatched = 0;
-    } else
-    {
-        $('#compare').css('color', 'green');
-        $('#compare').html('Passwords matched');
-        bothMatched = 1;
-    }
-    if ($('#con_pwd').val() == '')
-    {
-        $('#compare').html('confirm password can not be blank!');
-        bothMatched = 0;
-    }
-});
+                                    $('#con_pwd').on('blur', function () {
+                                        if ($('#new_pwd').val() != $('#con_pwd').val())
+                                        {
+                                            $('#compare').html('Both passwords mismatched!');
+                                            bothMatched = 0;
+                                        } else
+                                        {
+                                            $('#compare').css('color', 'green');
+                                            $('#compare').html('Passwords matched');
+                                            bothMatched = 1;
+                                        }
+                                        if ($('#con_pwd').val() == '')
+                                        {
+                                            $('#compare').html('confirm password can not be blank!');
+                                            bothMatched = 0;
+                                        }
+                                    });
+        </script>
+        <script type="text/javascript">
+            function chkemail()
+            {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                var ele = document.getElementById("email_id").value;
+                var dataString = 'email=' + ele;
+                $.ajax
+                        ({
+                            url: "<?php echo URL('checkemail') ?>",
+                            type: 'POST',
+                            data: dataString,
+                            success: function (html)
+                            {
+//                                alert(html);
+                                if (html == 1)
+                                {
+                                    $('#waitFor').html('EmailId matched..! Please Another Email Add..!');
+                                } else {
+                                    $('#waitFor').html('EmailId Not matched..!');
+                                }
+                            },
+                            error: function (errorThrown) {
+                                alert(errorThrown);
+                                alert("There is an error with AJAX!");
+                            }
+                        });
+            }
+            ;
+
         </script>
     </body>
 

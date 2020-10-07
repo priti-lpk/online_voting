@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('login');
 });
-
+//Auth::routes(['verify' => true]);
 //Register Page
 Route::get('/register', function () {
     return view('register');
@@ -51,6 +51,20 @@ Route::post('Email', 'SendEmail@send_mail');
 
 //Get pos data
 Route::post('getdata', 'MainController@get_position');
+
+//Check email
+Route::post('/checkemail', function (Request $request) {
+    $email = $request->input('email');
+    $getdata = DB::table('user_table')->where('email_id', $email)->get();
+    foreach ($getdata as $data) {
+        $id = $data->email_id;
+        if ($id = '') {
+            return "0";
+        } else {
+            return "1";
+        }
+    }
+});
 
 //Logout
 Route::get('/logout', function () {

@@ -132,7 +132,7 @@ class MainController extends Controller {
         $election = DB::table('election_table')->select('id', 'election_name')->get();
         $getdata = DB::select('select * from candidates_table where id = ?', [$id]);
         $candidate = DB::table('candidates_table')
-                ->select('candidates_table.id', 'position_table.position_name', 'candidates_table.first_name', 'candidates_table.last_name', 'candidates_table.image', 'candidates_table.symbol', 'candidates_table.election_id')
+                ->select('candidates_table.id', 'position_table.position_name', 'candidates_table.first_name', 'candidates_table.last_name', 'candidates_table.image', 'candidates_table.symbol', 'candidates_table.election_id','election_table.election_name')
                 ->join('position_table', 'candidates_table.position_id', '=', 'position_table.id')
                 ->join('election_table', 'candidates_table.election_id', '=', 'election_table.id')
                 ->get();
