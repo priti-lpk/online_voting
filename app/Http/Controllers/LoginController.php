@@ -22,9 +22,9 @@ class LoginController extends Controller {
 
     function checklogin(Request $request) {
         $name = $request->input('email_id');
-        $pass = $request->input('password');
+        $pass = md5($request->input('password'));
         $session = $request->session()->get('email_id');
-        $data = DB::select('select id from user_table where status=? and email_id=? and password=?', ['true', $name, $pass]);
+        $data = DB::select('select id from user_table where status=? and email_id=? and password=? and verify_status=?', ['true', $name, $pass, 'True']);
         if ($data == Array()) {
             
         } else {
@@ -54,13 +54,14 @@ class LoginController extends Controller {
         $lastname = $request->input('lastname');
         $email_id = $request->input('email_id');
         $password = md5($request->input('password'));
-        $data1 = array('firstname' => $firstname, "lastname" => $lastname, "email_id" => $email_id, "password" => $password, "status" => 'true');
+        $otp = rand(100000, 999999);
+        $data1 = array('firstname' => $firstname, "lastname" => $lastname, "email_id" => $email_id, "password" => $password, "status" => 'true', "verify_no" => $otp);
         DB::table('user_table')->insert($data1);
         $data = [
             'from' => 'talk@lpktechnosoft.com',
-            'subject' => 'Your Hash Key',
+            'subject' => 'Your Verify no.',
             'email' => $request->input('email_id'),
-            'password' => $password,
+            'otp' => $otp,
         ];
         Mail::to($email_id)->send(new TestEmail($data));
         return redirect('/');
@@ -79,7 +80,7 @@ class LoginController extends Controller {
         foreach ($getdata as $g) {
             $user = $g->password;
         }
-        if ($user == ($input['old'])) {
+        if ($user == md5($input['old'])) {
             return "1";
         } else {
             return "0";
@@ -96,14 +97,14 @@ class LoginController extends Controller {
             foreach ($getdata as $g) {
                 $email_id = $g->email_id;
             }
-            $data = [
-                'from' => 'talk@lpktechnosoft.com',
-                'subject' => 'Your Hash Key',
-                'email' => $email_id,
-                'password' => md5($input['new']),
-            ];
-//            print_r($data);
-            Mail::to($email_id)->send(new TestEmail($data));
+//            $data = [
+//                'from' => 'talk@lpktechnosoft.com',
+//                'subject' => 'Your Hash Key',
+//                'email' => $email_id,
+//                'password' => md5($input['new']),
+//            ];
+////            print_r($data);
+//            Mail::to($email_id)->send(new TestEmail($data));
             return '1';
         } else {
             return '0';

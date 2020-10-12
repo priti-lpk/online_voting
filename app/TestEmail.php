@@ -29,7 +29,7 @@ class TestEmail extends Mailable
      */
     public function build()
     {
-                return $this->from('talk@lpktechnosoft.com')->subject("Voting Password")->view('mail');
+                return $this->from('talk@lpktechnosoft.com')->subject("Verify Email")->view('mail');
 
     }
 }

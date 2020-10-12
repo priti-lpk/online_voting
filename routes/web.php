@@ -66,6 +66,31 @@ Route::post('/checkemail', function (Request $request) {
     }
 });
 
+
+//verify mail
+Route::post('verifymail', function (Request $request) {
+    $email = $request->input('email_id');
+    return view('verify', ['email' => $email]);
+});
+Route::get('/update_verify', function (Request $request) {
+    $email = $request->get('email_id');
+    $otp = $request->get('verify_status');
+    $getdata = DB::table('user_table')
+            ->where('email_id', $email)
+            ->get();
+    foreach ($getdata as $gt) {
+        $verify = $gt->verify_no;
+    }
+    if ($otp == $verify) {
+        $pass = DB::table('user_table')->where('email_id', $email)->update(['verify_status' => "True"]);
+        return redirect('/');
+    } else {
+        $pass = DB::table('user_table')->where('email_id', $email)->update(['verify_status' => "false"]);
+        return redirect()->back()->with('message', 'Authentication Fail');
+    }
+//    echo $verify;
+});
+
 //Logout
 Route::get('/logout', function () {
     return view('login');

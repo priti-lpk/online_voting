@@ -25,7 +25,7 @@
                 <div class="card-header">Register an Account</div>
                 <div class="card-body">
                     <form method="post" action="{{ URL::to('/add_register') }}">
-                        <!--<input name="_token" type="hidden" value="{{ csrf_token() }}"/>-->
+                        <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-label-group">
-                                <input type="email" id="email_id" class="form-control" placeholder="Email address" name="email_id" onblur="chkemail();">
+                                <input type="email" id="email_id" class="form-control" placeholder="Email address" name="email_id" autofocus="autofocus" onblur="chkemail();">
                                 <label for="inputEmail">Email address</label>
                             </div>
                             <div class = "col-md-12">
@@ -80,7 +80,7 @@
                                                         </div>
                                                     </div>
                                                 </div>-->
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="submit" class="btn btn-primary btn-block" id="myBtn">Register</button>
                     </form>
                 </div>
             </div>
@@ -158,8 +158,10 @@
                                 if (html == 1)
                                 {
                                     $('#waitFor').html('EmailId matched..! Please Another Email Add..!');
+                                    document.getElementById("myBtn").disabled = true;
                                 } else {
-                                    $('#waitFor').html('EmailId Not matched..!');
+                                    $('#waitFor').html('');
+                                    document.getElementById("myBtn").disabled = false;
                                 }
                             },
                             error: function (errorThrown) {
