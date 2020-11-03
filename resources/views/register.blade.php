@@ -55,7 +55,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="password" id="new_pwd" class="form-control" placeholder="Password" name="password" required="required">
+                                        <input type="password" id="new_pwd" class="form-control" placeholder="Password" name="password" required="required" onblur="test_str();">
                                         <label for="inputPassword">Password</label>
                                     </div>
                                 </div>
@@ -118,23 +118,23 @@
         <script src="{{ asset('public/vendor/datatables/responsive.bootstrap4.min.js') }}"></script>
         <script src="{{ asset('public/js/datatables.init.js') }}"></script>
         <script>
-                                    $('#con_pwd').on('blur', function () {
-                                        if ($('#new_pwd').val() != $('#con_pwd').val())
-                                        {
-                                            $('#compare').html('Both passwords mismatched!');
-                                            bothMatched = 0;
-                                        } else
-                                        {
-                                            $('#compare').css('color', 'green');
-                                            $('#compare').html('Passwords matched');
-                                            bothMatched = 1;
-                                        }
-                                        if ($('#con_pwd').val() == '')
-                                        {
-                                            $('#compare').html('confirm password can not be blank!');
-                                            bothMatched = 0;
-                                        }
-                                    });
+                                            $('#con_pwd').on('blur', function () {
+                                                if ($('#new_pwd').val() != $('#con_pwd').val())
+                                                {
+                                                    $('#compare').html('Both passwords mismatched!');
+                                                    bothMatched = 0;
+                                                } else
+                                                {
+                                                    $('#compare').css('color', 'green');
+                                                    $('#compare').html('Passwords matched');
+                                                    bothMatched = 1;
+                                                }
+                                                if ($('#con_pwd').val() == '')
+                                                {
+                                                    $('#compare').html('confirm password can not be blank!');
+                                                    bothMatched = 0;
+                                                }
+                                            });
         </script>
         <script type="text/javascript">
             function chkemail()
@@ -172,6 +172,26 @@
             }
             ;
 
+        </script>
+        <script type="text/javascript">
+            function test_str() {
+                var res;
+                var str = document.getElementById("new_pwd").value;
+                if (str.match(/[a-z]/g) && str.match(
+                        /[A-Z]/g) && str.match(
+                        /[0-9]/g) && str.match(
+                        /[^a-zA-Z\d]/g)) {
+                    res = "Correct Password";
+                    document.getElementById("myBtn").disabled = false;
+                    alert(res);
+                } else {
+                    res = "Please..!! must contain one Uppercase, Special character & number.";
+                    document.getElementById("myBtn").disabled = true;
+                    alert(res);
+                }
+//                document.getElementById("t2").value = res;
+
+            }
         </script>
     </body>
 
